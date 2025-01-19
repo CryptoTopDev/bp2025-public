@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import modalShade from "../../assets/image/modelbackground.svg";
@@ -6,6 +6,14 @@ import mobileModalShade from "../../assets/image/mobileModalShade.svg";
 import errorLogo from "../../assets/image/errorLogo.svg";
 
 const ErrorModal = ({ isOpen, onClose, title }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000); // Close after 3 seconds
+      return () => clearTimeout(timer); // Cleanup timeout if modal is closed early
+    }
+  }, [isOpen, onClose]);
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-50" />

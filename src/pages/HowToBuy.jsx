@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { motion } from "framer-motion";
 
 // images
 import faqCoin from "../assets/image/faq/faq-coin.png";
@@ -35,26 +36,27 @@ import coin6 from "../assets/image/howtobuy/coin6.svg";
 
 import { Helmet } from "react-helmet";
 import { Link } from "react-router";
+import { useToast } from "../utils/Toast/ToastProvider";
 import SuccessModal from "../utils/Modals/SuccessModal";
 
 const HowToBuy = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  // const showToast = useToast();
-  // const handleSuccess = () => {
-  //   showToast({ title: "Token claim was successful.", type: "error" });
-  // };
-  // const handleError = () => {
-  //   showToast({ title: "You dont enough so!", type: "error" });
-  // };
+  const showToast = useToast();
+  const handleSuccess = () => {
+    showToast({ title: "Token claim was successful.", type: "success" });
+  };
+  const handleError = () => {
+    showToast({ title: "You dont enough so!", type: "error" });
+  };
 
-  const[isOpen,setIsOpen]=useState(false);
-   const onClose=()=>{
-    console.log("onClose")
-    setIsOpen(false)
-  }
-  let title="Token purchase was successful.";
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => {
+    console.log("onClose");
+    setIsOpen(false);
+  };
+  let title = "Token purchase was successful.";
 
   return (
     <div className="bg-[#070707] !-z-50 min-h-[100vh]">
@@ -69,7 +71,11 @@ const HowToBuy = () => {
       {/* header components */}
       <Header active={8} />
 
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="h-[394px] bg-mob flex flex-col items-center justify-center mb-[138px] md:mb-[60px]"
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
@@ -79,14 +85,30 @@ const HowToBuy = () => {
         >
           Buy KYN
         </span>
-        <h1 className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[234px]">
+
+        {/* Text Animation */}
+        <motion.h1
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[234px]"
+        >
           How to Buy <br />
           KYN Coin
-        </h1>
-        <button className="mt-[16px]">
+        </motion.h1>
+
+        {/* Button Animation */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+          className="mt-[16px]"
+        >
           <img src={arrow} alt="" />
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <div className="w-[1065px] mx-auto flex flex-col lg:w-full lg:px-4">
         <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[215px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[20px] mx-auto">
@@ -138,7 +160,13 @@ const HowToBuy = () => {
             alt=""
           />
           {/* Step1 */}
-          <div className="flex flex-row sm:flex-col justify-between items-center sm:px-[30px] sm:py-10 px-[72px] py-20 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-row sm:flex-col justify-between items-center sm:px-[30px] sm:py-10 px-[72px] py-20 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+          >
             <div className="sm:w-full w-[40%] sm:items-start flex flex-col">
               <h2 className="text-[32px]  md:text-[28px] text-[#fff] mont-bold">
                 Step 1
@@ -152,7 +180,7 @@ const HowToBuy = () => {
               Solana blockchain. It’s like a digital vault where you can store,
               send, and receive Solana-based tokens like KYN Coin.
             </p>
-          </div>
+          </motion.div>
           <div className="flex sm:hidden justify-center">
             <div className="w-[1px] h-[48px] bg-[#B0B0B0]"></div>
           </div>
@@ -166,7 +194,13 @@ const HowToBuy = () => {
                 Setting Up Your Phantom Wallet
               </p>
               <div className="flex flex-col gap-6">
-                <div className="flex sm:flex-col flex-row justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex sm:flex-col flex-row justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       1. Download Phantom Wallet:
@@ -193,9 +227,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img1} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex sm:flex-col flex-row justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex sm:flex-col flex-row justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       2. Install the Extension:
@@ -216,9 +256,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img2} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex sm:flex-col flex-row justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex sm:flex-col flex-row justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       3. Create a New Wallet:
@@ -250,9 +296,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img3} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       4. Backup Your Recovery Phrase
@@ -279,9 +331,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img4} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       5. Set a Password:
@@ -299,9 +357,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img5} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       6. Access Your Wallet:
@@ -320,7 +384,7 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step2img6} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -341,7 +405,13 @@ const HowToBuy = () => {
                 Phantom Wallet mobile app for iOS or Android.
               </p>
               <div className="flex flex-col gap-6">
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       1. Download the App:
@@ -369,9 +439,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-[94%] sm:mx-auto">
                     <img src={step3img1} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       2. Install the App:
@@ -390,9 +466,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-[94%] sm:mx-auto">
                     <img src={step3img2} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       3. Log In to Your Wallet:
@@ -417,9 +499,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-[94%] sm:mx-auto">
                     <img src={step3img3} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       4. Start Managing Your Tokens:
@@ -438,7 +526,7 @@ const HowToBuy = () => {
                   <div className="w-[49%]  sm:w-[94%] sm:mx-auto">
                     <img src={step3img4} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -458,7 +546,13 @@ const HowToBuy = () => {
                 Phantom Wallet to cover transaction fees and buy the tokens.
               </p>
               <div className="flex flex-col gap-6">
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       1. Find Your Wallet Address:
@@ -476,9 +570,15 @@ const HowToBuy = () => {
                   <div className="w-[49%]  sm:w-[94%] sm:mx-auto">
                     <img src={step4img1} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       2. Buy SOL:
@@ -486,7 +586,7 @@ const HowToBuy = () => {
                     <ul className="text-white space-y-4 pl-4">
                       <li className="font-light grid grid-cols-[auto,1fr] gap-2">
                         <span className="list-disc text-[12px] pt-1">•</span>
-                        <span>
+                        <span className="sm:w-[270px] w-full">
                           You can purchase SOL from exchanges like or
                           <span className="font-bold">
                             {" "}
@@ -501,9 +601,9 @@ const HowToBuy = () => {
                       </li>
                       <li className="font-light grid grid-cols-[auto,1fr] gap-2">
                         <span className="list-disc text-[12px] pt-1">•</span>
-                        <span className="mont-light w-[348px]">
-                          Send the SOL to your Phantom Wallet
-                          <br /> by pasting your wallet address.
+                        <span className="mont-light sm:w-[290px] w-[348px]">
+                          Send the SOL to your Phantom Wallet by pasting your
+                          wallet address.
                         </span>
                       </li>
                     </ul>
@@ -511,9 +611,15 @@ const HowToBuy = () => {
                   <div className="w-[49%]  sm:w-[94%] sm:mx-auto">
                     <img src={step4img2} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2   mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       3. Verify the Funds:
@@ -531,7 +637,7 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step4img3} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -551,7 +657,13 @@ const HowToBuy = () => {
                 Coin:
               </p>
               <div className="flex flex-col gap-6">
-                <div className="flex flex-row sm:flex-col justify-between items-center sm:gap-2 mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2 mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       1. Visit the KYN Coin Presale Page:
@@ -569,9 +681,15 @@ const HowToBuy = () => {
                   <div className="w-[46%] sm:w-full lg:pr-4">
                     <img src={step5img1} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2 items-center  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       2. Connect Your Wallet:
@@ -590,9 +708,15 @@ const HowToBuy = () => {
                   <div className="w-[47%] sm:w-[94%] sm:mx-auto lg:pr-4">
                     <img src={step5img2} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between items-center sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between  sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       3. Select the Amount of KYN Coin to Purchase:
@@ -617,9 +741,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step5img3} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       4. Confirm the Purchase:
@@ -641,9 +771,15 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step5img4} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-row sm:flex-col justify-between items-center sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-row sm:flex-col justify-between sm:gap-2  mt-4 sm:mx-[22px] mx-[36px] px-6 py-8 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+                >
                   <div className="w-[45%] sm:w-full flex flex-col gap-4">
                     <h2 className="text-[18px] font-extrabold text-white">
                       5. Receive Your KYN Coins:
@@ -661,7 +797,7 @@ const HowToBuy = () => {
                   <div className="w-[49%] sm:w-full">
                     <img src={step5img5} className="w-full h-full" alt="" />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -669,7 +805,13 @@ const HowToBuy = () => {
             <div className="w-[1px] h-[48px] bg-[#B0B0B0]"></div>
           </div>
           {/* Step6 */}
-          <div className="flex justify-between items-center sm:px-[50px] px-[72px] py-12 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex justify-between items-center sm:px-[50px] px-[72px] py-12 bg-[#0f0f0f] border border-[#B0B0B0] rounded-[30px]"
+          >
             <div className="flex flex-col">
               <h2 className="text-[32px]  md:text-[28px] text-[#fff] mont-bold">
                 Step 6
@@ -702,9 +844,15 @@ const HowToBuy = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </motion.div>
           {/* Support */}
-          <div className=" flex flex-row justify-between sm:flex-col py-[68px] lg:pb-[30px]">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className=" flex flex-row justify-between sm:flex-col py-[68px] lg:pb-[30px]"
+          >
             <div className="w-[50%] sm:w-full lg:flex-col lg:flex lg:items-center">
               <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[134px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[25px]">
                 Contact Us
@@ -731,11 +879,17 @@ const HowToBuy = () => {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
-      <div className="bg-[#fff] pt-[20px] xl:pt-[60px] xl:pb-0">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="bg-[#fff] pt-[20px] xl:pt-[60px] xl:pb-0"
+      >
         <div className="max-w-[1278px] w-[100%] mx-auto grid grid-cols-[1fr_1fr] gap-16 items-center xl:px-[33px] md:grid-cols-1 xl:gap-10">
           <div className="md:order-2">
             <img src={faqCoin} alt="" className="w-full" />
@@ -762,7 +916,7 @@ const HowToBuy = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer active={8} />
       <SuccessModal isOpen={isOpen} onClose={onClose} title={title} />

@@ -24,7 +24,7 @@ export const ToastProvider = ({ children }) => {
       {children}
       <Toast.Provider swipeDirection="right">
         <Toast.Root
-          className={`bg-[#e3e3e3] rounded-xl w-[432px] sm:w-[380px] h-[139px] m-6 px-4 pt-4 relative`}
+          className={`bg-[#e3e3e3] rounded-xl w-[432px] sm:w-[350px] sm:mx-auto h-[139px] m-6 px-4 pt-4 relative`}
           open={toastState.open}
           onOpenChange={(open) => setToastState((prev) => ({ ...prev, open }))}
         >
@@ -52,7 +52,11 @@ export const ToastProvider = ({ children }) => {
             {toastState.description}
           </Toast.Description>
         </Toast.Root>
-        <Toast.Viewport className="toast-viewport" />
+        <Toast.Viewport
+          className="toast-viewport fixed z-[100] 
+          bottom-[-60px] right-[-50px] 
+          sm:top-[5%] sm:right-[3%]"
+        />
       </Toast.Provider>
     </ToastContext.Provider>
   );
