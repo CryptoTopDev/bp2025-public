@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { motion } from "framer-motion";
 
 // images
 import landing from "../assets/image/white-paper/landing.png";
@@ -18,7 +19,10 @@ export const WhitePaper = () => {
       {/* meta data */}
       <Helmet>
         <title>$KYN | Whitepaper</title>
-        <meta name="description" content="Read the KYN Token whitepaper to understand our vision, tokenomics, and roadmap. See how blockchain technology supports our mission of economic growth." />
+        <meta
+          name="description"
+          content="Read the KYN Token whitepaper to understand our vision, tokenomics, and roadmap. See how blockchain technology supports our mission of economic growth."
+        />
       </Helmet>
 
       {/* header components */}
@@ -28,18 +32,42 @@ export const WhitePaper = () => {
         className="h-[394px] bg-mob flex flex-col items-center justify-center mb-[138px] md:mb-[60px]"
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
-        <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[172px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]">
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-[14px] mont-bold text-[#363636] h-[38px] w-[172px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]"
+        >
           KYN whitepaper
-        </span>
-        <h1 className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] ">
+        </motion.span>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px]"
+        >
           Our <br /> Whitepaper
-        </h1>
-        <button className="mt-[16px]">
+        </motion.h1>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+          className="mt-[16px]"
+        >
           <img src={arrow} alt="" />
-        </button>
+        </motion.button>
       </div>
 
-      <div className="w-[1097px] xl:w-full xl:px-4 lg:grid-cols-1 mx-auto grid grid-cols-[577px_1fr] gap-10 pb-[148px] lg:pb-[60px]">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-[1097px] xl:w-full xl:px-4 lg:grid-cols-1 mx-auto grid grid-cols-[577px_1fr] gap-10 pb-[148px] lg:pb-[60px]"
+      >
         <div className="lg:flex-col lg:flex lg:items-center">
           <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[134px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[25px]">
             Download
@@ -72,7 +100,7 @@ export const WhitePaper = () => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer active={7} />
     </div>

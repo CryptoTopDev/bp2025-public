@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Header } from "../components/Header";
+import { motion } from "framer-motion";
 
 // images
 import landing from "../assets/image/white-paper/landing.png";
@@ -17,6 +18,101 @@ export const Tokenomics = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2, // Staggered animation
+        duration: 0.5,
+      },
+    }),
+  };
+  const cards = [
+    { title: "Kyncoin", subtitle: "Name" },
+    { title: "KYN", subtitle: "Symbol" },
+    { title: "9", subtitle: "Decimals" },
+    { title: "186,500,000 KYN", subtitle: "Total Supply" },
+    { title: "213 SOL ($50K)", subtitle: "SoftCap" },
+    { title: "$6.67 million (28,637 SOL)", subtitle: "HardCap" },
+    {
+      title: `111,900,000 <br /> (60<span class="poppins font-bold">%</span>)`,
+      subtitle: "Presale Allocation",
+      isHTML: true,
+    },
+    // Add more cards as needed
+  ];
+  const [inView, setInView] = useState(false);
+
+  // Intersection Observer callback function
+  const handleIntersection = (entries) => {
+    const [entry] = entries;
+    if (entry.isIntersecting) {
+      setInView(true); // Set state to true when element is in view
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5, // Trigger when 50% of the element is visible
+    });
+
+    const element = document.querySelector("#animated-section");
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, []);
+
+  const [isInView2, setIsInView2] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView2(true);
+        }
+      },
+      { threshold: 0.3 } // Trigger when 30% of the element is visible
+    );
+
+    const element = document.getElementById("animated-section2");
+    if (element) observer.observe(element);
+
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, []);
+
+  const [isInView3, setIsInView3] = useState(false);
+
+  useEffect(() => {
+    const element = document.getElementById("animated-section3");
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+          setIsInView3(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, []);
+
   return (
     <div className="min-h-[100vh] bg-[#070707]  overflow-hidden relative">
       {/* meta data */}
@@ -30,25 +126,54 @@ export const Tokenomics = () => {
 
       <Header active={3} />
       <div
-        className="h-[394px] bg-mob flex flex-col items-center justify-center  lg:mb-[0px]"
+        id="animated-section"
+        className={`h-[394px] bg-mob flex flex-col items-center justify-center lg:mb-[0px] transition-all duration-800`}
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
-        <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[131px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]">
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-[14px] mont-bold text-[#363636] h-[38px] w-[131px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]"
+        >
           Tokenomics
-        </span>
-        <h1 className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[258px]">
+        </motion.span>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[258px]"
+        >
           Our Tokenomics Just <br className="md:hidden" /> Make Sense.
-        </h1>
-        <button className="mt-[16px]">
+        </motion.h1>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+          className="mt-[16px]"
+        >
           <img src={arrow} alt="" />
-        </button>
+        </motion.button>
       </div>
       <div className="w-[1061px] relative z-10 mx-auto py-[120px] grid grid-cols-2 gap-[72px] items-center lg:w-full lg:grid-cols-1 lg:py-[60px] lg:px-4 md:gap-[30px]">
-        <div className="relative  xl:px-10 sm:!px-0">
+        <motion.div
+          id="animated-section2"
+          className="relative xl:px-10 sm:!px-0"
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView2 ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
           <SwapForm />
-        </div>
-        <div className="md:flex md:flex-col md:items-center lg:px-10">
-          <h1 className="text-[54px] md:text-[28px] md:text-center md:leading-[40px] text-[#fff] mont-bold leading-[52px] mb-[29px] md:mb-[15px]">
+        </motion.div>
+
+        <motion.div
+          id="animated-section-2"
+          className="md:flex md:flex-col md:items-center lg:px-10"
+          initial={{ opacity: 0, x: 50 }}
+          animate={isInView2 ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <h1 className="text-[54px] md:text-[28px] md:text-center md:leading-[40px] text-[#fff] mont-bold leading-[52px] mb-[29px]">
             How to Buy <br /> KynCoin
           </h1>
           <ul className="flex flex-col gap-[35px] mb-[35px] w-[419px] md:w-[266px] md:mx-auto md:gap-[15px]">
@@ -65,15 +190,15 @@ export const Tokenomics = () => {
               transaction and secure your Kyncoin.
             </li>
           </ul>
-
           <Link
             to="/"
             className="w-[236px] h-[50px] flex items-center justify-center rounded-full bg-[#fff] text-[#000000] text-[16px] mont-bold"
           >
             Join the Presale Now
           </Link>
-        </div>
+        </motion.div>
       </div>
+
       <div className="relative overflow-hidden ">
         <img
           src={coin1}
@@ -86,55 +211,97 @@ export const Tokenomics = () => {
           className="absolute -right-[150px] bottom-[300px] md:hidden"
         />
         <div className="w-[848px] z-10 relative mx-auto pb-[120px] grid grid-cols-6 gap-[12px] lg:w-full lg:grid-cols-2 sm:!grid-cols-1 lg:px-4">
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          <motion.div
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }} // Trigger when 50% of the element is in view
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               Kyncoin
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Name
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay:0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               KYN
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Symbol
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay:1, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               9
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Decimals
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 1 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               186,500,000 <br /> KYN
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Total Supply
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay:0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 1 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               213 SOL ($50K)
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               SoftCap
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay:1, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 1 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               $6.67 million <br /> (28,637 SOL)
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               HardCap
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               111,900,000 <br />
               (60<span className="poppins font-bold">%</span>)
@@ -142,8 +309,14 @@ export const Tokenomics = () => {
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Presale Allocation
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]"
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               Jan 20, 2025 <br />
               <span className="text-[22px] leading-[20px] inline-block">
@@ -153,34 +326,34 @@ export const Tokenomics = () => {
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Presale Start Date
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
-              June 19, 2025
+              Whitelisted Members
               <br />
               <span className="text-[22px] leading-[20px] inline-block">
-                (Juneteenth)
+                0.059
               </span>
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
-              Presale End Date
+              Per KYN
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
-              June 19, 2025
-              <br />
-              <span className="text-[22px] leading-[20px] inline-block">
-                (Juneteenth)
-              </span>
-            </h1>
-            <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
-              Presale End Date
-            </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
-            <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
-              Non Whitelisted Members 
+              Unwhitelisted Members 
               <br />
               <span className="text-[22px] leading-[20px] inline-block">
                 0.065
@@ -189,21 +362,51 @@ export const Tokenomics = () => {
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Per KYN
             </p>
-          </div>
-          <div className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
-              Whitelisted Members
+              June 19, 2025
               <br />
               <span className="text-[22px] leading-[20px] inline-block">
-                0.059 
+                (Juneteenth)
               </span>
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
-              Per KYN
+              Presale End Date
             </p>
-          </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-2 lg:col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
+            <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
+              June 19, 2025
+              <br />
+              <span className="text-[22px] leading-[20px] inline-block">
+                (Juneteenth)
+              </span>
+            </h1>
+            <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
+              Presale End Date
+            </p>
+          </motion.div>
 
-          <div className="h-[195px] col-span-3 lg:col-span-2 sm:!col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-3 lg:col-span-2 sm:!col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               65<span className="poppins font-bold">%</span> of funds raised
               during presale
@@ -211,15 +414,21 @@ export const Tokenomics = () => {
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Liquidity Pool Allocation
             </p>
-          </div>
-          <div className="h-[195px] col-span-3 lg:col-span-2 sm:!col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] ">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="h-[195px] col-span-3 lg:col-span-2 sm:!col-span-1 w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px] "
+          >
             <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
               Discord Community Members
             </h1>
             <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
               Whitelisted Wallets
             </p>
-          </div>
+          </motion.div>
         </div>
 
         <div className="w-[844px] relative z-10 mx-auto pb-[120px] lg:w-full lg:pb-[80px] lg:px-4">
@@ -280,15 +489,19 @@ export const Tokenomics = () => {
         </div>
       </div>
 
-      <div
+      <motion.div
+        id="animated-section3"
         className="py-[115px] flex flex-col items-center justify-center border-t-[0.5px] border-t-[#B0B0B0] lg:py-[60px]"
         style={{ background: `url(${bg})`, backgroundSize: "cover" }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView3 ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="w-[851px] mx-auto text-center lg:w-full lg:px-4">
           <h1 className="text-[54px] text-[#fff] mont-bold leading-[50px] mb-[15px] md:text-[28px] md:leading-[35px]">
             Post-Presale Price Strategy: Your Impact, Your Return
           </h1>
-          <p className="text-[16px] text-[#fff] mont-light  md:text-[14px]">
+          <p className="text-[16px] text-[#fff] mont-light md:text-[14px]">
             Following the presale, the price of KYN will increase by 30
             <span className="poppins font-extralight">%</span>, ensuring that
             early investors see a return on their investment as the token enters
@@ -296,14 +509,14 @@ export const Tokenomics = () => {
           </p>
           <div className="mt-[47px] grid grid-cols-2 gap-[14px] md:grid-cols-1">
             <div className="h-[195px] w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
-              <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
+              <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center md:text-[22.25px]">
                 $0.059 per KYN
               </h1>
               <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
                 Whitelisted Presale Price
               </p>
             </div>
-            <div className="h-[195px] w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center  md:h-[136px]">
+            <div className="h-[195px] w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
               <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
                 $0.065
               </h1>
@@ -311,8 +524,8 @@ export const Tokenomics = () => {
                 Non Whitelisted Price
               </p>
             </div>
-             <div className="h-[195px] w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center  md:h-[136px]">
-              <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center  md:text-[22.25px]">
+            <div className="h-[195px] w-full bg-gradient-to-tr from-[#FFFFFF] to-[#EDEDED] border-[1px] border-[#B0B0B0] rounded-[30px] flex flex-col items-center justify-center  md:h-[136px]">
+              <h1 className="text-[#000000] text-[32px] leading-[34px] mont-bold text-center md:text-[22.25px]">
                 $0.077 per KYN
               </h1>
               <p className="text-[22px] text-[#000000] mont-light md:text-[15.3px]">
@@ -321,7 +534,7 @@ export const Tokenomics = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="mt-[120px] pb-[120px] max-w-[1061px] w-[100%]  mx-auto  md:w-full md:px-4 md:pb-[40px] md:mt-10">
         <h1 className="text-[40px] text-[#fff] mont-bold leading-[50px] md:text-[28px] md:leading-[35px] text-center mb-16 md:mb-10 ">

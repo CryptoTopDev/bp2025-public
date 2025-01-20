@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Header } from "../components/Header";
+import { motion } from "framer-motion";
 
 // images
 import landing from "../assets/image/white-paper/landing.png";
@@ -17,12 +18,19 @@ export const FWB = () => {
       {/* meta data */}
       <Helmet>
         <title>$KYN | FWB</title>
-        <meta name="description" content="Join the KYN Friends with Benefits (FWB) initiative to support our mission. Developers and contributors, help us create innovative tools for economic empowerment." />
+        <meta
+          name="description"
+          content="Join the KYN Friends with Benefits (FWB) initiative to support our mission. Developers and contributors, help us create innovative tools for economic empowerment."
+        />
       </Helmet>
 
       {/* header components */}
       <Header active={6} />
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="h-[394px]  bg-mob flex flex-col items-center justify-center mb-[138px] md:mb-[60px]"
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
@@ -35,9 +43,15 @@ export const FWB = () => {
         <button className="mt-[16px]">
           <img src={arrow} alt="" />
         </button>
-      </div>
+      </motion.div>
 
-      <div className="w-[1065px] mx-auto flex flex-col lg:w-full lg:px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-[1065px] mx-auto flex flex-col lg:w-full lg:px-4"
+      >
         <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[165px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[20px] mx-auto">
           FWB (KYN FWB)
         </span>
@@ -51,18 +65,24 @@ export const FWB = () => {
           you’ll not only help shape a blockchain designed to empower
           underserved communities but also earn KYN in return for your efforts.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="py-[45px] pb-0 bg-[#fff]">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="py-[45px] pb-0 bg-[#fff]"
+      >
         <div className="max-w-[1278px] xl:px-4 w-full mx-auto grid grid-cols-[.7fr_1fr] items-center gap-[40px] md:grid-cols-1 ">
           <div className="pb-5">
             <span className="text-[14px] mont-bold text-[#363636] w-[146px] h-[36px] border-[1px] border-[#363636] flex items-center justify-center rounded-full mb-[20px]">
               Application
             </span>
             <h1 className="text-[54px] md:text-[42px] md:leading-[40px] text-[#000] mont-bold leading-[52px]">
-              Become A KYN <br /> FWB Member
+              Benefits for <br /> FWB Members
             </h1>
-{/*             <ul className="my-[30px] flex flex-col gap-2 list-disc pl-4">
+            {/* <ul className="my-[30px] flex flex-col gap-2 list-disc pl-4">
               <li className="text-[16px] mont-light text-[#000]">
                 <span className="mont-bold">Early Access</span> to presale and
                 token distributions
@@ -104,7 +124,7 @@ export const FWB = () => {
             <img src={main} alt="" />
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer active={6} />
     </div>

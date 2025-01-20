@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Header } from "../components/Header";
+import { motion } from "framer-motion";
 // images
 import landing from "../assets/image/white-paper/landing.png";
 import arrow from "../assets/image/white-paper/arrow.svg";
@@ -32,52 +33,63 @@ export const Presale = () => {
       </Helmet>
 
       <Header active={4} />
-      <div
-        className="h-[394px] bg-mob flex flex-col items-center justify-center  lg:mb-[0px]"
-        style={{ background: `url(${landing})`, backgroundSize: "cover" }}
-      >
-        <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[131px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]">
-          Presale
-        </span>
-        <h1 className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[232px]">
-          Secure Your Spot in <br className="md:hidden" /> the Movement
+      <motion.div
+      className="h-[394px] bg-mob flex flex-col items-center justify-center  lg:mb-[0px]"
+      style={{ background: `url(${landing})`, backgroundSize: "cover" }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[131px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]">
+        Presale
+      </span>
+      <h1 className="text-[72px] md:text-[42px] text-[#000000] text-center mont-bold leading-[90px] md:leading-[40px] md:w-[232px]">
+        Secure Your Spot in <br className="md:hidden" /> the Movement
+      </h1>
+      <button className="mt-[16px]">
+        <img src={arrow} alt="" />
+      </button>
+    </motion.div>
+
+    <motion.div
+      className="w-[1061px] relative z-10 mx-auto py-[120px] grid grid-cols-2 gap-[72px] items-center lg:w-full lg:grid-cols-1 lg:py-[60px] lg:px-4 md:gap-[30px]"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <div className="relative  xl:px-10 sm:!px-0">
+        <SwapForm />
+      </div>
+      <div className="md:flex md:flex-col md:items-center lg:px-10">
+        <h1 className="text-[54px] md:text-[28px] md:text-center md:leading-[40px] text-[#fff] mont-bold leading-[52px] mb-[29px] md:mb-[15px]">
+          How to Buy <br /> KYN Coin
         </h1>
-        <button className="mt-[16px]">
-          <img src={arrow} alt="" />
-        </button>
-      </div>
+        <ul className="flex flex-col gap-[35px] mb-[35px] w-[419px] md:w-[266px] md:mx-auto md:gap-[15px]">
+          <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
+            <span className="mont-bold text-[20px]">1</span> Connect your
+            wallet.
+          </li>
+          <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
+            <span className="mont-bold text-[20px]">2</span> Choose your
+            investment amount.
+          </li>
+          <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
+            <span className="mont-bold text-[20px]">3</span> Confirm your
+            transaction and secure your KYN.
+          </li>
+        </ul>
 
-      <div className="w-[1061px] relative z-10 mx-auto py-[120px] grid grid-cols-2 gap-[72px] items-center lg:w-full lg:grid-cols-1 lg:py-[60px] lg:px-4 md:gap-[30px]">
-        <div className="relative  xl:px-10 sm:!px-0">
-          <SwapForm />
-        </div>
-        <div className="md:flex md:flex-col md:items-center lg:px-10">
-          <h1 className="text-[54px] md:text-[28px] md:text-center md:leading-[40px] text-[#fff] mont-bold leading-[52px] mb-[29px] md:mb-[15px]">
-            How to Buy <br /> KYN Coin
-          </h1>
-          <ul className="flex flex-col gap-[35px] mb-[35px] w-[419px] md:w-[266px] md:mx-auto md:gap-[15px]">
-            <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
-              <span className="mont-bold text-[20px]">1</span> Connect your
-              wallet.
-            </li>
-            <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
-              <span className="mont-bold text-[20px]">2</span> Choose your
-              investment amount.
-            </li>
-            <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
-              <span className="mont-bold text-[20px]">3</span> Confirm your
-              transaction and secure your Kyncoin.
-            </li>
-          </ul>
-
-          <Link
-            to="/"
-            className="w-[236px] h-[50px] flex items-center justify-center rounded-full bg-[#fff] text-[#000000] text-[16px] mont-bold"
-          >
-            Join the Presale Now
-          </Link>
-        </div>
+        <Link
+          to="/"
+          className="w-[236px] h-[50px] flex items-center justify-center rounded-full bg-[#fff] text-[#000000] text-[16px] mont-bold"
+        >
+          Join the Presale Now
+        </Link>
       </div>
+    </motion.div>
+
       <div className="relative">
         <img
           src={presalegrid}
@@ -98,7 +110,7 @@ export const Presale = () => {
               <span className="mont-bold">January 20, 2025</span>, to{" "}
               <span className="mont-bold">June 19, 2025</span>, with tokens
               available for purchase at{" "}
-              <span className="mont-bold">$0.059 per token</span>. The presale
+              <span className="mont-bold">$0.059 per token for whitelisted members & 0.065 for unwhitelisted members</span>. The presale
               aims to raise $6.67 million by selling 60
               <span className="poppins font-extralight">%</span> of the total
               supply (111,900,000 KYN). Unsold tokens will not be burned,
@@ -128,7 +140,7 @@ export const Presale = () => {
                 $0.059 per token
               </h1>
               <p className="text-[22px] mont-light text-[#FFFFFF] md:text-[15.3px]">
-                Presale Price
+                Whitelisted Presale Price
               </p>
             </div>
             <div className="border-[1px] h-[196px] border-[#B0B0B0] bg-gradient-to-tr from-[#0D0D0D] to-[#151515] rounded-[30px] flex flex-col items-center justify-center md:h-[136px]">
@@ -158,7 +170,13 @@ export const Presale = () => {
           </div>
         </div>
       </div>
-      <div className="relative lg:px-4">
+
+      <motion.div className="relative lg:px-4" 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      >
         <img
           src={hand}
           alt=""
@@ -180,7 +198,7 @@ export const Presale = () => {
               </li>
               <li className="text-[16px] mont-light lg:text-[12px] text-[#FFFFFF] flex items-start gap-5">
                 <span className="mont-bold">3</span>
-                Confirm your transaction and secure <br /> your BP2025 tokens.
+                Confirm your transaction and secure <br /> your KYN.
               </li>
             </ul>
 
@@ -192,7 +210,7 @@ export const Presale = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="mt-[120px] pb-[120px] max-w-[1061px] w-[100%]  mx-auto  md:w-full md:px-4 md:pb-[40px] md:mt-0">
         <h1 className="text-[40px] text-[#fff] mont-bold leading-[50px] md:text-[28px] md:leading-[35px] text-center mb-16 md:mb-10 ">

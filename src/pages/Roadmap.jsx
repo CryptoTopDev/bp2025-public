@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Header } from "../components/Header";
+import { motion, useAnimation } from "framer-motion";
 
 // images
 import landing from "../assets/image/white-paper/landing.png";
@@ -19,6 +20,51 @@ export const RoadMap = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const [sec2inView, setSec2InView] = useState(false);
+
+  // Intersection Observer callback function
+  const handleIntersection2 = (entries) => {
+    const [entry] = entries;
+    if (entry.isIntersecting) {
+      setSec2InView(true); // Set state to true when element is in view
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection2, {
+      threshold: 0.2, // Trigger when 50% of the element is visible
+    });
+
+    const element = document.querySelector("#animated-section2");
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, []);
+
+  const [scrollY, setScrollY] = useState(0);
+  const controls = useAnimation();
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      console.log(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  const scrollRange = Math.max(0, Math.min(scrollY - 1600, 2000));
+  console.log(scrollRange); // Maps the scroll between 1800 and 2600
+  const height = (scrollRange / 90) * 7;
+
   return (
     <div className="min-h-[100vh] bg-[#070707]">
       {/* meta data */}
@@ -32,7 +78,11 @@ export const RoadMap = () => {
 
       <Header active={5} />
 
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="h-[394px] bg-mob flex flex-col items-center justify-center  lg:mb-[0px]"
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
@@ -46,7 +96,8 @@ export const RoadMap = () => {
         <button className="mt-[16px]">
           <img src={arrow} alt="" />
         </button>
-      </div>
+      </motion.div>
+
       <div className="relative">
         <img
           src={grid}
@@ -54,11 +105,31 @@ export const RoadMap = () => {
           className="absolute left-1/2 -translate-x-1/2 top-[140px]"
         />
 
-        <div className="w-[1061px] relative z-10 mx-auto py-[120px] grid grid-cols-2 gap-[72px] items-center lg:w-full lg:grid-cols-1 lg:py-[60px] lg:px-4 md:gap-[30px]">
-          <div className="relative  xl:px-10 sm:!px-0">
+        <motion.div
+          id="animated-section2"
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: sec2inView ? 1 : 0, y: sec2inView ? 0 : 100 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-[1061px] relative z-10 mx-auto py-[120px] grid grid-cols-2 gap-[72px] items-center lg:w-full lg:grid-cols-1 lg:py-[60px] lg:px-4 md:gap-[30px]"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: sec2inView ? 1 : 0,
+              scale: sec2inView ? 1 : 0.8,
+            }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="relative  xl:px-10 sm:!px-0"
+          >
             <SwapForm />
-          </div>
-          <div className="md:flex md:flex-col md:items-center lg:px-10">
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: sec2inView ? 1 : 0, y: sec2inView ? 0 : 50 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="md:flex md:flex-col md:items-center lg:px-10"
+          >
             <h1 className="text-[54px] md:text-[28px] md:text-center md:leading-[40px] text-[#fff] mont-bold leading-[52px] mb-[29px] md:mb-[15px]">
               How to Buy <br /> KYN Coin
             </h1>
@@ -73,7 +144,7 @@ export const RoadMap = () => {
               </li>
               <li className="text-[16px] text-[#fff] md:text-[14px] mont-light flex items-center gap-[25px] md:gap-[16px]">
                 <span className="mont-bold text-[20px]">3</span> Confirm your
-                transaction and secure your BP2025 tokens.
+                transaction and secure your KYN.
               </li>
             </ul>
 
@@ -83,21 +154,34 @@ export const RoadMap = () => {
             >
               Join the Presale Now
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
+
       <div className="relative overflow-hidden md:pt-10">
-        <img
+        <motion.img
           src={coin1}
           className="absolute -left-[200px] top-[200px] md:w-[148px] md:-left-[60px] md:top-[370px]"
           alt=""
+          initial={{ x: "-100%" }}
+          animate={{ x: scrollY > 1600 ? 0 : "-100%" }}
+          transition={{ duration: 0.5 }}
         />
-        <img
+        <motion.img
           src={coin2}
           className="absolute -right-[200px]  top-[700px]  md:w-[148px] md:-right-[70px] md:-top-[30px]"
           alt=""
+          initial={{ x: "100%" }}
+          animate={{ x: scrollY > 2000 ? 0 : "100%" }}
+          transition={{ duration: 0.5 }}
         />
-        <div className="w-[1065px] mx-auto flex flex-col lg:w-full relative z-10 lg:px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-[1065px] mx-auto flex flex-col lg:w-full relative z-10 lg:px-4"
+        >
           <span className="text-[14px] mont-bold text-[#363636] h-[38px] w-[200px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[20px] mx-auto">
             KYN ROADMAP
           </span>
@@ -111,14 +195,24 @@ export const RoadMap = () => {
             efforts to long-term product development, every phase adds value to
             KYN and its investors.
           </p>
-        </div>
+        </motion.div>
 
         <div className="py-[172px] relative md:py-[50px]">
           <span className="h-[100%] bg-[#333333] w-[1px] absolute left-1/2 -translate-x-1/2 top-0"></span>
-          <span className="h-[38%] bg-[#fff] w-[1px] absolute left-1/2 -translate-x-1/2 top-0"></span>
+          <motion.span
+            className="bg-[#fff] w-[1px] absolute left-1/2 -translate-x-1/2 top-0"
+            style={{ height: `${height}%` }}
+            animate={controls}
+          />
           <div className="w-[722px] mx-auto lg:w-full">
             <div className="flex justify-between items-start">
-              <div className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4">
+              <motion.div
+                initial={{ opacity: 0, x: "-100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4"
+              >
                 <h1 className="text-[32px]  md:text-[22px] sm:!text-[18px] text-[#fff] mont-bold text-right">
                   Phase 1:
                 </h1>
@@ -131,19 +225,31 @@ export const RoadMap = () => {
                   <span className="w-[40px] h-[1px] bg-[#fff] lg:w-[30px]"></span>
                   <span className="w-[18px] h-[18px] rounded-full border-[1px] border-[#fff] bg-[#838383]"></span>
                 </div>
-              </div>
-              <ul className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5">
+              </motion.div>
+              <motion.ul
+                initial={{ opacity: 0, x: "100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5"
+              >
                 <li className="text-[#FFFFFF] text-[16px] mont-light md:text-[14px]">
                   The first phase focuses on creating a vibrant, engaged, and
                   informed community. KYN will be instrumental in funding
                   educational resources, outreach initiatives, and community
                   hubs that encourage growth and collaboration.
                 </li>
-              </ul>
+              </motion.ul>
             </div>
 
             <div className="flex justify-between items-start mt-[122px]">
-              <div className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4">
+              <motion.div
+                initial={{ opacity: 0, x: "-100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4"
+              >
                 <h1 className="text-[32px] md:text-[22px] sm:!text-[18px] text-[#fff] mont-bold text-right">
                   Phase 2:
                 </h1>
@@ -154,18 +260,30 @@ export const RoadMap = () => {
                   <span className="w-[40px] h-[1px] bg-[#fff] lg:w-[30px]"></span>
                   <span className="w-[18px] h-[18px] rounded-full border-[1px] border-[#fff] bg-[#838383]"></span>
                 </div>
-              </div>
-              <ul className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5">
+              </motion.div>
+              <motion.ul
+                initial={{ opacity: 0, x: "100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5"
+              >
                 <li className="text-[#FFFFFF] text-[16px] mont-light md:text-[14px]">
                   We will use KYN to attract strategic investments and
                   partnerships that will help us reduce operational costs and
                   enhance our economic footprint.
                 </li>
-              </ul>
+              </motion.ul>
             </div>
 
             <div className="flex justify-between items-start mt-[122px]">
-              <div className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4">
+              <motion.div
+                initial={{ opacity: 0, x: "-100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4"
+              >
                 <h1 className="text-[32px]  md:text-[22px] sm:!text-[18px] text-[#fff] mont-bold text-right">
                   Phase 3:
                 </h1>
@@ -177,18 +295,30 @@ export const RoadMap = () => {
                   <span className="w-[40px] h-[1px] bg-[#fff] lg:w-[30px]"></span>
                   <span className="w-[18px] h-[18px] rounded-full border-[1px] border-[#fff] bg-[#838383]"></span>
                 </div>
-              </div>
-              <ul className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5">
+              </motion.div>
+              <motion.ul
+                initial={{ opacity: 0, x: "100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5"
+              >
                 <li className="text-[#FFFFFF] text-[16px] mont-light md:text-[14px]">
                   With funding secured, we’ll build a dedicated, full-time team
                   to focus on product development, expanding our reach, and
                   strengthening the KYN ecosystem.
                 </li>
-              </ul>
+              </motion.ul>
             </div>
 
             <div className="flex justify-between items-start mt-[122px]">
-              <div className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4">
+              <motion.div
+                initial={{ opacity: 0, x: "-100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[278px] relative lg:w-[50%] lg:pr-12 lg:pl-4"
+              >
                 <h1 className="text-[32px] md:text-[22px] sm:!text-[18px] text-[#fff] mont-bold text-right">
                   Phase 4:
                 </h1>
@@ -199,21 +329,33 @@ export const RoadMap = () => {
                   <span className="w-[40px] h-[1px] bg-[#fff] lg:w-[30px]"></span>
                   <span className="w-[18px] h-[18px] rounded-full border-[1px] border-[#fff] bg-[#838383]"></span>
                 </div>
-              </div>
-              <ul className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5">
+              </motion.div>
+              <motion.ul
+                initial={{ opacity: 0, x: "100%" }}
+                viewport={{ once: true, amount: 0.5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                className="w-[308px] flex flex-col gap-3 lg:w-[50%] lg:pl-10 lg:pr-5"
+              >
                 <li className="text-[#FFFFFF] text-[16px] mont-light md:text-[14px]">
                   From a Black-owned business app to the BP Card and more, phase
                   4 will bring KYN into practical use, integrating it into
                   products that benefit the Black community and its financial
                   growth.
                 </li>
-              </ul>
+              </motion.ul>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-[120px] pb-[120px] w-[1061px] mx-auto  md:w-full md:px-4 md:pb-[60px] md:mt-10 ">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="mt-[120px] pb-[120px] w-[1061px] mx-auto  md:w-full md:px-4 md:pb-[60px] md:mt-10 "
+      >
         <h1 className="text-[40px] text-[#fff] mont-bold leading-[50px] md:text-[28px] md:leading-[35px] text-center mb-16 md:mb-10 ">
           Frequently Asked Questions
         </h1>
@@ -239,9 +381,15 @@ export const RoadMap = () => {
             paragraph="KYN will fund initiatives that create business infrastructure, financial services, and community-building projects that empower the Black community to thrive economically."
           />
         </div>
-      </div>
+      </motion.div>
 
-      <div className="bg-[#fff] pt-[20px] xl:pt-[60px] xl:pb-0">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="bg-[#fff] pt-[20px] xl:pt-[60px] xl:pb-0"
+      >
         <div className="max-w-[1278px] w-[100%] mx-auto grid grid-cols-[1fr_1fr] gap-16 items-center xl:px-[33px] md:grid-cols-1 xl:gap-10">
           <div className="md:order-2">
             <img src={faqCoin} alt="" className="w-full" />
@@ -268,7 +416,7 @@ export const RoadMap = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer active={5} />
     </div>
