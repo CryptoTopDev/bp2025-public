@@ -19,7 +19,7 @@ export const Header = ({ active }) => {
         </Link>
 
         <nav
-          className={`gap-[22px] flex items-center ml-[42px] flex-1 xl:fixed xl:flex-col xl:h-[100vh] xl:w-[200px] xl:-left-[100%] duration-500 xl:top-0 xl:bg-[#000] xl:ml-0 xl:pt-[50px] ${
+          className={`gap-[22px] flex xl:justify-start justify-center items-center ml-[42px] flex-1 xl:fixed xl:flex-col xl:h-[100vh] xl:w-[200px] xl:-left-[100%] duration-500 xl:top-0 xl:bg-[#000] xl:ml-0 xl:pt-[50px] ${
             activeNav === true && "xl:!left-0"
           }`}
         >

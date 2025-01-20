@@ -185,31 +185,6 @@ export const IDL =
       ]
     },
     {
-      "name": "startPresale",
-      "accounts": [
-        {
-          "name": "presaleInfo",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        }
-      ],
-      "args": [
-        {
-          "name": "startTime",
-          "type": "u64"
-        },
-        {
-          "name": "identifier",
-          "type": "u8"
-        }
-      ]
-    },
-    {
       "name": "buyToken",
       "accounts": [
         {
@@ -451,10 +426,6 @@ export const IDL =
       ],
       "args": [
         {
-          "name": "solAmount",
-          "type": "u64"
-        },
-        {
           "name": "identifier",
           "type": "u8"
         }
@@ -556,6 +527,10 @@ export const IDL =
             "type": "u64"
           },
           {
+            "name": "claimCounts",
+            "type": "u64"
+          },
+          {
             "name": "claimTime",
             "type": "u64"
           }
@@ -614,5 +589,8 @@ export const IDL =
       "name": "NotEndedYet",
       "msg": "Presale not ended yet"
     }
-  ]
+  ],
+  "metadata": {
+    "address": "3QnUmBbcvN4TYWHBGJmcAxhzvUjA2WM6iv788D86GPv3"
+  }
 }

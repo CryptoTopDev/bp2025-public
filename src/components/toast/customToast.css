@@ -1,0 +1,33 @@
+/* Common Toast Content */
+.toast-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toast-image {
+    /* width: 50px; */
+    height: 50px;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+  
+  /* Success Toast Box */
+  .custom-toast-box-success {
+    background-color: #ffffff !important; /* Green */
+    color: black;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1000 !important; 
+    min-height: 70px !important;
+  }
+  
+  /* Error Toast Box */
+  .custom-toast-box-error {
+    background-color: #ffffff !important; /* Red */
+    color: black;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1000 !important;
+    min-height: 70px !important;
+  }
+  

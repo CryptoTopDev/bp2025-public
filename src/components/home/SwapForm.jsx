@@ -1,26 +1,53 @@
 import React, { useEffect, useState } from "react";
 import sol from "../../assets/image/swap/sol.svg";
 import kyn from "../../assets/image/swap/kyn.svg";
+
+import swap from "../../assets/image/swap/swap.svg";
 import kynCoin from "../../assets/image/swap/kyn-coin.svg";
 import robot from "../../assets/image/swap/robot.svg";
 import filter from "../../assets/image/swap/filter.svg";
 import swapform from "../../assets/image/swap/swap-form.png";
 import usePresale from "../../contract/usePresale";
+import { useWallet } from "@solana/wallet-adapter-react";
+// import dotenv from 'dotenv';
+// dotenv.config();
+
+const hardCap = process.env.REACT_APP_PRESALE_HARDCAP;
+
+
 
 export const SwapForm = () => {
   const {
     endTime,
+    depositToken,
     claimableAmount,
     buyToken,
     claimToken,
     getSolPrice,
+    createPresale,
+    withdrawSol,
+    PRESALE_AUTHORITY,
     solAmount,
+    defaultPrice,
   } = usePresale();
+  const { publicKey} = useWallet();
 
-  const [solInputAmount, setSolAmount] = useState(0);
+  const [solInputAmount, setSolAmount] = useState();
   const [tokenAmount, setTokenAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-   const [timeLeft, setTimeLeft] = useState({
+  const [wallets, setwallet] = useState([
+    {
+      heading: "SOL",
+      img: sol,
+    },
+    {
+      heading: "KYN",
+      img: kyn,
+    },
+  ]);
+
+  const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
@@ -28,7 +55,7 @@ export const SwapForm = () => {
   });
 
   useEffect(() => {
-      const interval = setInterval(() => {
+    const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = endTime * 1000 - now;
 
@@ -53,14 +80,13 @@ export const SwapForm = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [endTime]);
+  }, []);
 
   const handleChangeSolAmount = async (e) => {
     setSolAmount(e.target.value);
     const solPrice = await getSolPrice();
-    console.log("solPrice", solPrice);
-    setTokenAmount((e.target.value * Number(solPrice)) / 0.059);
-    console.log((e.target.value * Number(solPrice)) / 0.059);
+    setTokenAmount((e.target.value * Number(solPrice)) / defaultPrice);
+    setTotalPrice((e.target.value * Number(solPrice)));
   };
 
   return (
@@ -128,17 +154,18 @@ export const SwapForm = () => {
           <div className="border-[1px] border-[#EAEAEA] rounded-[20px]">
             <span className="bg-[#EAEAEA] w-full h-[25px]  rounded-full px-[5px] flex items-center">
               <span
-                className={`h-[19px] rounded-full bg-gradient-to-tr from-[#171717] to-[#3B3B3B] `} style = {{width:`${(
-                  (Number(solAmount) * 100) /
-                  Number(2000000)
-                ).toFixed(
-                  0
-                )}%`}}
+                className={`h-[19px] rounded-full bg-gradient-to-tr from-[#171717] to-[#3B3B3B] `}
+                style={{
+                  width: `${(
+                    (Number(solAmount) * 100) /
+                    Number(hardCap)
+                  ).toFixed(0)}%`,
+                }}
               ></span>
             </span>
             <h1 className="text-[17px] mont-bold sm:text-[14px] mt-[7px] mb-[6px] text-[#fff] text-center">
               SOL Raised : {Number(solAmount)} SOL{" "}
-              <span className="poppins text-[14px]">/</span> 2,000,000 SOL
+              <span className="poppins text-[14px]">/</span> 28637 SOL
             </h1>
           </div>
         </div>
@@ -166,21 +193,12 @@ export const SwapForm = () => {
           <div className="my-[20px] flex items-center gap-3">
             <span className="flex-1 h-[1px] w-full bg-[#000] block"></span>
             <h1 className="text-[18px] text-[#000000] mont-bold">
-              1 KYN = 0.059 USD
+              1 KYN = {defaultPrice} USD
             </h1>
             <span className="flex-1 h-[1px] w-full bg-[#000] block"></span>
           </div>
 
           <div className="flex relative flex-col gap-[5px] mb-[20px]">
-            {/* <img
-              src={swap}
-              onClick={(e) => {
-                const inverseWallet = [wallets[1], wallets[0]];
-                setwallet(inverseWallet);
-              }}
-              className="absolute cursor-pointer left-[75px] top-1/2 -translate-y-1/2"
-              alt=""
-            /> */}
             <div className="p-[15px] border-[1px] border-[#000000]  rounded-[15px] bg-gradient-to-tr from-[#98989881] to-[#15151577] flex items-center justify-between">
               <div className="flex items-center justify-center gap-[6px] h-[55px] w-[128px] bg-[#3b3b3b81] border-[1px] border-[#000] rounded-[10px] sm:w-[110px] sm:h-[50px]">
                 <img src={sol} alt="" className="sm:w-[25px] w-[35px]" />
@@ -195,10 +213,9 @@ export const SwapForm = () => {
                   value={solInputAmount}
                   onChange={handleChangeSolAmount}
                 />
-                {/* <h1 className="text-[#FFFFFF]  text-[25px] mont-bold">100,000</h1>
               <p className="text-[#F1F1F1] sm:text-[14px] text-[16px] mont-light">
-                $100.00
-              </p> */}
+                ${Number(totalPrice).toFixed(2)}
+              </p>
               </div>
             </div>
             <div className="p-[15px] border-[1px] border-[#000000]  rounded-[15px] bg-gradient-to-tr from-[#98989881] to-[#15151577] flex items-center justify-between">
@@ -212,36 +229,72 @@ export const SwapForm = () => {
                 <h1 className="text-[#FFFFFF]  text-[25px] mont-bold">
                   {tokenAmount.toFixed(2)}
                 </h1>
+                <p className="text-[#F1F1F1] sm:text-[14px] text-[16px] mont-light">
+                ${Number(totalPrice).toFixed(2)}
+              </p>
               </div>
             </div>
           </div>
 
-          <button
-            className="text-[16px] text-[#FFFFFF] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#171717] to-[#3B3B3B] mont-bold hover:from-[#fff] hover:border-[1px] hover:border-[#000] hover:text-[#000] duration-200"
-            onClick={async () => {
-              await buyToken(solInputAmount, Number(tokenAmount.toFixed(2)));
-            }}
-          >
-            Buy Token
-          </button>
-
-
-
-
-          
-          <button
-            className="text-[16px] text-[#000] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#fff] to-[#fff] mont-bold border-[1px] border-[#000] mt-[10px] mb-[25px] hover:from-[#171717] hover:to-[#3B3B3B] hover:text-[#fff] duration-200"
-            onClick={async () => {
-              await claimToken();
-            }}
-          >
-            Claim
-          </button>
+          {publicKey && PRESALE_AUTHORITY.toBase58() === publicKey.toBase58() ? (
+            <>
+              <button
+                className="text-[16px] text-[#FFFFFF] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#171717] to-[#3B3B3B] mont-bold hover:from-[#fff] hover:border-[1px] hover:border-[#000] hover:text-[#000] duration-200"
+                onClick={async () => {
+                  await createPresale();
+                }}
+              >
+                Create Presale
+              </button>
+              <button
+                className="text-[16px] text-[#000] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#fff] to-[#fff] mont-bold border-[1px] border-[#000] mt-[10px] mb-[25px] hover:from-[#171717] hover:to-[#3B3B3B] hover:text-[#fff] duration-200"
+                onClick={async () => {
+                  await withdrawSol();
+                }}
+              >
+                Withdraw
+              </button>
+              <button
+                className="text-[16px] text-[#000] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#fff] to-[#fff] mont-bold border-[1px] border-[#000] mt-[10px] mb-[25px] hover:from-[#171717] hover:to-[#3B3B3B] hover:text-[#fff] duration-200"
+                onClick={async () => {
+                  await depositToken();
+                }}
+              >
+                Desposit Token
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="text-[16px] text-[#FFFFFF] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#171717] to-[#3B3B3B] mont-bold hover:from-[#fff] hover:border-[1px] hover:border-[#000] hover:text-[#000] duration-200"
+                onClick={async () => {
+                  await buyToken(
+                    solInputAmount,
+                    Number(tokenAmount.toFixed(2))
+                  );
+                }}
+              >
+                Buy Token
+              </button>
+              <button
+                className="text-[16px] text-[#000] w-full h-[49px] rounded-[10px] bg-gradient-to-tr from-[#fff] to-[#fff] mont-bold border-[1px] border-[#000] mt-[10px] mb-[25px] hover:from-[#171717] hover:to-[#3B3B3B] hover:text-[#fff] duration-200"
+                onClick={async () => {
+                  await claimToken();
+                }}
+              >
+                Claim
+              </button>
+            </>
+          )}
 
           <div className="flex items-center justify-between">
-            <h1 className="text-[16px] sm:text-[12px] mont-bold text-[#000000]">
+            <a
+              href="https://phantom.com/"
+              target="_blank"
+              className="text-[16px] sm:text-[12px] mont-bold text-[#000000] cursor-pointer"
+            >
               Don’t have a wallet?
-            </h1>
+            </a>
             <div className="flex items-center gap-2">
               <p className="text-[14px] sm:text-[12px] mont-light text-[#000000]">
                 Connect Wallet to Swap

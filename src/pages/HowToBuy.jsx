@@ -36,20 +36,20 @@ import coin6 from "../assets/image/howtobuy/coin6.svg";
 
 import { Helmet } from "react-helmet";
 import { Link } from "react-router";
-import { useToast } from "../utils/Toast/ToastProvider";
-import SuccessModal from "../utils/Modals/SuccessModal";
+// import { useToast } from "../utils/Toast/ToastProvider";
+// import SuccessModal from "../utils/Modals/SuccessModal";
 
 const HowToBuy = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const showToast = useToast();
-  const handleSuccess = () => {
-    showToast({ title: "Token claim was successful.", type: "success" });
-  };
-  const handleError = () => {
-    showToast({ title: "You dont enough so!", type: "error" });
-  };
+  // const showToast = useToast();
+  // const handleSuccess = () => {
+  //   showToast({ title: "Token claim was successful.", type: "success" });
+  // };
+  // const handleError = () => {
+  //   showToast({ title: "You dont enough so!", type: "error" });
+  // };
 
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => {
@@ -80,7 +80,7 @@ const HowToBuy = () => {
         style={{ background: `url(${landing})`, backgroundSize: "cover" }}
       >
         <span
-          onClick={() => setIsOpen(true)}
+          // onClick={() => setIsOpen(true)}
           className="text-[14px] mont-bold text-[#363636] h-[38px] w-[89px] flex items-center justify-center border-[1px] border-[#363636] rounded-full mb-[16px] pt-[4px]"
         >
           Buy KYN
@@ -919,7 +919,7 @@ const HowToBuy = () => {
       </motion.div>
 
       <Footer active={8} />
-      <SuccessModal isOpen={isOpen} onClose={onClose} title={title} />
+      {/* <SuccessModal isOpen={isOpen} onClose={onClose} title={title} /> */}
       {/* <ErrorModal isOpen={isOpen} onClose={onClose} title={title} /> */}
     </div>
   );
